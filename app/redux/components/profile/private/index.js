@@ -34,11 +34,13 @@ class ProfilePrivate extends Component {
 
     // Modify model from API to create form initial values
     getInitialValues() {
-        const {user} = this.props;
+        const {user, fetchCountries} = this.props;
 
         if (!user) {
             return {};
         }
+
+        const countries = fetchCountries();
 
         let v = {};
 
@@ -47,6 +49,8 @@ class ProfilePrivate extends Component {
         v.surname = user.surname;
 
         v.gender = user.gender ? user.gender : "";
+
+        v.countries =  countries;
 
         v.lang = user.lang ? user.lang : "";
 
@@ -92,6 +96,7 @@ class ProfilePrivate extends Component {
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}
                         user={user}
+                        countries = {user.countries}
                     />
                 </div>
             </div>
@@ -102,6 +107,7 @@ class ProfilePrivate extends Component {
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
     user: getUser(state),
+    fetchCountries:fetchCountries
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
