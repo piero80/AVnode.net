@@ -70,7 +70,10 @@ class ProfileEmails extends Component {
                     <Navbar/>
                 </div>
                 <div className="col-md-10">
-                    <h1>MY EMAIL</h1>
+                    <h1 className="labelField">MY EMAIL</h1>
+
+                    <br/>
+
                     <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}

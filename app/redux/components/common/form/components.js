@@ -11,104 +11,166 @@ import moment from 'moment';
 import StrongPassword from 'react-strongpassword';
 import Dropzone from 'react-dropzone';
 
-export const googleAutocompleteSelect = ({input, meta, placeholder, options}) => {
-    return <div className="form-group">
-        {placeholder && <label htmlFor="first_name">{placeholder}</label>}
-        <PlacesAutocomplete inputProps={input} options={options}/>
+export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
+    const cssClasses = {
+        root: 'form-group',
+        input: 'form-control',
+        autocompleteContainer: 'my-autocomplete-container'
+      }
+    const field = <div>
+        <PlacesAutocomplete inputProps={input} classNames={cssClasses} options={options}/>
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
 
+    return !!isChild ? field :
+        <dl className="row">
+            <dt className="col-sm-2">{placeholder}</dt>
+            <dd className="col-sm-10"> {field} </dd>
+        </dl>
+
 };
 
-const inputField = ({input, type, meta, placeholder}) => {
-    return <div className="form-group">
-        {placeholder && <label htmlFor="first_name">{placeholder}</label>}
+const inputField = ({input, type, meta, placeholder, title, isChild}) => {
+    const field = <div className="form-group">
         <input type={type} className="form-control" {...input} placeholder={placeholder}/>
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
-
+    const label = <div className="labelField">{placeholder}</div>;
+    return !!isChild ? field :
+        <dl className="row">
+            <dt className="col-sm-2">{label}</dt>
+            <dd className="col-sm-10"> {field} </dd>
+        </dl>
 };
 
-export const inputText = ({input, meta, placeholder}) => {
-    return inputField({input, type: "text", meta, placeholder})
+export const inputText = ({input, meta, placeholder, isChild}) => {
+    return inputField({input, type: "text", meta, placeholder, isChild})
 };
 
-export const inputPassword = ({input, meta, placeholder}) => {
-    return inputField({input, type: "password", meta, placeholder})
+export const inputPassword = ({input, meta, placeholder, isChild}) => {
+    return inputField({input, type: "password", meta, placeholder, isChild})
 };
 
-export const inputPasswordMeter = ({input, meta, placeholder}) => {
-    return <div className="form-group">
-        {placeholder && <label htmlFor="first_name">{placeholder}</label>}
+export const inputPasswordMeter = ({input, meta, placeholder, isChild}) => {
+    const field = <div className="form-group">
         <StrongPassword {...input} placeholder={placeholder} className="form-control"/>
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
-    </div>
+    </div>;
+    const label = <div className="labelField">{placeholder}</div>;
+    return !!isChild ? field :
+        <dl className="row">
+            <dt className="col-sm-2">{label}</dt>
+            <dd className="col-sm-10"> {field} </dd>
+        </dl>
 };
 
-export const inputUrl = ({input, meta, placeholder}) => {
-    return inputField({input, type: "url", meta, placeholder})
+export const inputUrl = ({input, meta, placeholder, isChild}) => {
+    return inputField({input, type: "url", meta, placeholder, isChild})
 };
 
-export const inputTel = ({input, meta, placeholder}) => {
-    return inputField({input, type: "tel", meta, placeholder})
+export const inputTel = ({input, meta, placeholder, isChild}) => {
+    return inputField({input, type: "tel", meta, placeholder, isChild})
 };
 
-export const inputEmail = ({input, meta, placeholder}) => {
-    return inputField({input, type: "email", meta, placeholder})
+export const inputEmail = ({input, meta, placeholder, isChild}) => {
+    return inputField({input, type: "email", meta, placeholder, isChild})
 };
 
-export const textarea = ({input, id, meta, placeholder, options}) =>
-    <div className="form-group">
+export const textarea = ({input, id, meta, placeholder, isChild}) => {
+    const field = <div className="form-group">
         {placeholder && <label htmlFor="first_name">{placeholder}</label>}
         <Textarea id={id} className="form-control" {...input} placeholder={placeholder}/>
         {meta.error && meta.touched && <span>{meta.error}</span>}
     </div>;
+    const label = <div className="labelField">{placeholder}</div>;
+    return !!isChild ? field :
+        <dl className="row">
+            <dt className="col-sm-2">{label}</dt>
+            <dd className="col-sm-10"> {field} </dd>
+        </dl>
+};
 
-export const textareaMultiTab = ({tabs = [], name, labels = {}, fields}) => {
+export const textareaMultiTab = ({tabs = [], name, labels = {}, placeholder, fields}) => {
 
-    return <Tab.Container id="left-tab-languages" defaultActiveKey={0}>
-        <div className="row">
-            <div className="col-md-2 navabout">
-                <Nav bsStyle="pills" stacked>
-                    {tabs.map((k, index) => (
-                        <NavItem eventKey={index}>{labels[k]}</NavItem>
-                    ))}
-                </Nav>
-            </div>
-            <div className="col-md-10">
-                <Tab.Content animation>
-                    {fields.map((member, index) => {
-                        return <Tab.Pane eventKey={index}>
-                            <Field
-                                name={`${member}.value`}
-                                component={textarea}
-                            />
-                        </Tab.Pane>
-                    })}
-                </Tab.Content>
+    const id = `tabs-${Math.random()}`;
+    const hasValue = (fields, index) => !!fields.get(index).value;
+    const label = <div className="labelField">{placeholder}</div>;
+    
+    return <div className="card">
+        <div className="card-header">
+            <h4>{label}</h4>
+        </div>
+        <div className="card-body">
+            <br/>
+
+            <ul className="nav nav-pills justify-content-center">
+                {tabs.map((k, index) => (
+                    <li className="nav-item" key={index}>
+                        <a
+                            className={"nav-link " + (index === 0 ? "active" : "")}
+                            data-toggle="pill"
+                            href={`#${id}${index}`}>
+                            {labels[k]}{hasValue(fields, index) ? "" : "*"}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+
+            <div className="tab-content">
+                {fields.map((member, index) => {
+                    return <div
+                        key={index}
+                        className={"tab-pane container " + (index === 0 ? "active" : "")}
+                        id={`${id}${index}`}>
+                        <Field
+                            name={`${member}.value`}
+                            component={textarea}
+                            isChild={true}
+                        />
+                    </div>
+
+                })}
             </div>
         </div>
-    </Tab.Container>;
+    </div>
+
 };
 
-export const multiInputUrl = ({fields, title, showModal, meta: {error}}) => {
-    return multiInput({fields, title, meta: {error}, showModal, render: inputUrl, key: "url"})
+export const multiInputUrl = ({fields, title, showModal, placeholder, meta: {error}}) => {
+    return multiInput({
+        fields,
+        title,
+        meta: {error},
+        showModal,
+        placeholder,
+        render: inputUrl,
+        key: "url",
+        isChild: true
+    })
 };
 
-export const multiInputText = ({fields, title, showModal, meta: {error}}) => {
-    return multiInput({fields, title, meta: {error}, showModal, render: inputText, key: "text"})
+export const multiInputText = ({fields, title, showModal, placeholder, meta: {error}}) => {
+    return multiInput({
+        fields,
+        title,
+        meta: {error},
+        showModal,
+        placeholder,
+        render: inputText,
+        key: "text",
+        isChild: true
+    })
 };
 
-
-export const multiInputEmail = ({fields, title, showModal, meta: {error}}) => {
+export const multiInputEmail = ({fields, title, showModal, placeholder, meta: {error}}) => {
     const renderSubField = (member, index, fields, showModal) => {
         const {is_confirmed} = fields.get(index);
-
         return <div className="row" key={index}>
-            <div className="col-md-6">
+            <div className="col-md-5 offset-1">
                 <Field
                     name={`${member}.email`}
                     component={inputEmail}
+                    isChild={true}
                 />
             </div>
             <div className="col-md-5">
@@ -119,6 +181,7 @@ export const multiInputEmail = ({fields, title, showModal, meta: {error}}) => {
                             name={`${member}.is_public`}
                             component={checkboxField}
                             placeholder="Is public"
+                            isChild={true}
                         />
                     </div>
                     <div className="col-md-4">
@@ -127,15 +190,14 @@ export const multiInputEmail = ({fields, title, showModal, meta: {error}}) => {
                             name={`${member}.is_primary`}
                             component={checkboxField}
                             placeholder="Is primary"
+                            isChild={true}
                         />
                     </div>
                     <div className="col-md-4">
                         {is_confirmed ? "Is confirmed" : "Not yet confirmed"}
                     </div>
 
-
                 </div>
-
 
             </div>
             <div className="col-md-1">
@@ -148,61 +210,83 @@ export const multiInputEmail = ({fields, title, showModal, meta: {error}}) => {
                                 }
                             })}
                 >
-                    -
+                    <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
                 </Button>
             </div>
         </div>
 
     };
-    return <div>
-        <label>{title}</label>
-        {error && <span className="error-message">{error}</span>}
+    const label = <div className="labelField">{placeholder}</div>;
+    return <div className="card">
+        <div className="card-header">
+            <h4>{label}</h4>
+            <Button bsStyle="success" className="pull-right"
+                    onClick={() => fields.unshift({})}>
+                <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
+            </Button>
+        </div>
+        <div className="card-body">
+            <br/>
+            {error && <span className="error-message">{error}</span>}
+            {fields.map((member, index, fields) => renderSubField(member, index, fields, showModal))}
 
-        {fields.map((member, index, fields) => renderSubField(member, index, fields, showModal))}
-        <Button bsStyle="success" onClick={() => fields.push({})}>+</Button>
-
-    </div>
+        </div>
+    </div>;
 };
 
-export const multiInputTel = ({fields, title, showModal, meta: {error}}) => {
-    return multiInput({fields, title, meta: {error}, showModal, render: inputTel, key: "tel"})
+export const multiInputTel = ({fields, title, showModal, placeholder, meta: {error}}) => {
+    return multiInput({
+        fields,
+        title,
+        meta: {error},
+        showModal,
+        placeholder,
+        render: inputTel,
+        key: "tel",
+        isChild: true
+    })
 };
 
-export const multiGoogleCityCountry = ({fields, title, showModal, meta: {error}}) => {
+export const multiGoogleCityCountry = ({fields, title, showModal, placeholder, meta: {error}}) => {
     return multiInput({
         showModal,
         fields,
         title,
+        placeholder,
         meta: {error},
         render: googleAutocompleteSelect,
         key: "text",
         options: {
             types: ['(city)']
-        }
+        },
+        isChild: true
     })
 };
 
-export const multiGoogleAddress = ({fields, title, meta: {error}, showModal}) => {
+export const multiGoogleAddress = ({fields, title, showModal, placeholder, meta: {error}}) => {
     return multiInput({
         showModal,
         fields,
+        placeholder,
         title,
         meta: {error},
         render: googleAutocompleteSelect,
-        key: "text",
+        key: "formatted_address",
         options: {
             types: ['address']
-        }
+        }, isChild: true
     })
 };
 
-const multiInput = ({fields, title, meta: {error}, render, key, showModal}) => {
-    const renderSubField = (member, index, fields, render, key = "text") => (
+const multiInput = ({fields, title, meta: {error}, render, placeholder, key, showModal}) => {
+    const label = <div className="labelField">{placeholder}</div>;
+    const renderSubField = ({member, index, fields, render, key = "text"}) => (
         <div className="row" key={index}>
-            <div className="col-md-10">
+            <div className="col-md-9 offset-1">
                 <Field
                     name={`${member}.${key}`}
                     component={render}
+                    isChild={true}
                 />
             </div>
             <div className="col-md-2">>
@@ -217,37 +301,49 @@ const multiInput = ({fields, title, meta: {error}, render, key, showModal}) => {
 
                         })}
                 >
-                    -
+                    <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
                 </Button>
             </div>
         </div>
-    )
+    );
 
-    return <div>
-        <label>{title}</label>
-        {error && <span className="error-message">{error}</span>}
-        {fields.map((member, index, fields) => renderSubField(member, index, fields, render, key, showModal))}
-        <Button bsStyle="success" onClick={() => fields.push({})}>+</Button>
+    return <div className="card">
+        <div className="card-header">
+            <h4>{label}</h4>
+            <Button bsStyle="success" className="pull-right"
+                                      onClick={() => fields.unshift({})}>
+                <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
+            </Button>
+        </div>
+        <div className="card-body">
+            <br/>
+            {error && <span className="error-message">{error}</span>}
+            {fields.map((member, index, fields) => renderSubField({member, index, fields, render, key, showModal}))}
+
+        </div>
     </div>
 };
 
-export const renderList = ({input, meta, placeholder, hideResetButton, options, classNames, disabled, defaultValue}) => {
-    return <div className="form-group">
-        {placeholder && <label htmlFor={input.name}>{placeholder}</label>}
-        <Select            
+export const renderList = ({input, meta, placeholder, hideResetButton, options, isChild}) => {
+    const field = <div className="form-group">
+        <Select
             name={input.name}
-            value={input.value} 
+            value={input.value}
             options={options}
-            onChange={input.onChange}          
+            onChange={input.onChange}
         />
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
+    const label = <div className="labelField">{placeholder}</div>;
+    return !!isChild ? field :
+        <dl className="row">
+            <dt className="col-sm-2">{label}</dt>
+            <dd className="col-sm-10"> {field} </dd>
+        </dl>
 };
 
-export const renderDatePicker = ({input, meta, placeholder, disabled}) =>
-    <div className="form-group">
-        <label htmlFor="first_name">{placeholder}</label>
-        <br/>
+export const renderDatePicker = ({input, meta, placeholder, isChild}) => {
+    const field = <div className="form-group">
         <DatePicker
             {...input}
             dateForm="MM/DD/YYYY"
@@ -255,9 +351,17 @@ export const renderDatePicker = ({input, meta, placeholder, disabled}) =>
         />
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
+    const label = <div className="labelField">{placeholder}</div>;
+    return !!isChild ? field :
+        <dl className="row">
+            <dt className="col-sm-2">{label}</dt>
+            <dd className="col-sm-10"> {field} </dd>
+        </dl>
+}
 
-export const checkboxField = ({input, meta, id, placeholder, disabled, classNames, options}) =>
-    <div className={"form-group " + classNames}>
+
+export const checkboxField = ({input, meta, id, placeholder, disabled, classNames, isChild}) => {
+    const field = <div className={"form-group " + classNames}>
         <input
             id={id}
             defaultChecked={input.value}
@@ -267,8 +371,15 @@ export const checkboxField = ({input, meta, id, placeholder, disabled, className
             placeholder={placeholder}
             disabled={disabled}
         />
-        {placeholder && <label htmlFor={id}>{placeholder}</label>}
     </div>;
+    const label = <div className="labelField">{placeholder}</div>;
+    return !!isChild ? field :
+        <dl className="row">
+            <dt className="col-sm-2">{label}</dt>
+            <dd className="col-sm-10"> {field} </dd>
+        </dl>
+}
+
 
 export const renderDropzoneInput = (field) => {
     let files = field.input.value;
@@ -298,7 +409,7 @@ export const renderDropzoneInput = (field) => {
 
     return (
         <div className="form-group">
-            <label htmlFor="first_name">{field.placeholder}</label>
+            <h4 className="labelField">{field.placeholder}</h4>
 
             <Dropzone
                 className="attachment-dropzone"
@@ -312,7 +423,7 @@ export const renderDropzoneInput = (field) => {
                     field.input.onChange(files)
                 }}
             >
-                <div>Drop files here, or click to select files to upload. (Max file size 10 MB)</div>
+                <div className="labelField">Drop files here, or click to select files to upload. (Max file size 10 MB)</div>
             </Dropzone>
 
             {field.meta.touched && field.meta.error && <span className="error">{field.meta.error}</span>}
@@ -339,7 +450,7 @@ export const renderDropzoneInput = (field) => {
                             })
 
                         }}>
-                            -
+                            <i className="fa fa-trash" data-toggle="tooltip" data-placement="top" />
                         </button>
 
                     </li>)}
