@@ -91,7 +91,7 @@ class ProfilePrivate extends Component {
 
     render() {
 
-        const {user} = this.props;
+        const {user, showModal} = this.props;
 
         return (
             <div className="row">

@@ -17,11 +17,11 @@ const tools = require('./tools/tools');
 const toolsEmails = require('./tools/toolsEmails');
 
 router.use('/api/user', user);
-router.use('/api/profile/public', profilePublic);
-router.use('/api/profile/images', profileImages);
-router.use('/api/profile/emails', profileEmails);
-router.use('/api/profile/private', profilePrivate);
-router.use('/api/profile/password', profilePassword);
+//router.use('/api/profile/public', profilePublic);
+//router.use('/api/profile/images', profileImages);
+//router.use('/api/profile/emails', profileEmails);
+//router.use('/api/profile/private', profilePrivate);
+//router.use('/api/profile/password', profilePassword);
 router.use('/api/crew', crew);
 router.use('/api/performance', performance);
 router.use('/api/event', event);

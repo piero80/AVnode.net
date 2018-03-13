@@ -263,7 +263,7 @@ export const multiGoogleCityCountry = ({fields, title, showModal, placeholder, m
     })
 };
 
-export const multiGoogleAddress = ({fields, title, placeholder, meta: {error}, showModal}) => {
+export const multiGoogleAddress = ({fields, title, showModal, placeholder, meta: {error}}) => {
     return multiInput({
         showModal,
         fields,
