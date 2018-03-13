@@ -63,6 +63,12 @@ class ProfilePrivate extends Component {
         // Phone: Add one item if value empty
         v.phone =  (Array.isArray(user.phone) && user.phone.length > 0) ? 
         user.phone : [{tel: ""}];
+        // Mobile: Add one item if value empty
+        v.mobile =  (Array.isArray(user.mobile) && user.mobile.length > 0) ? 
+        user.mobile : [{tel: ""}];
+        // Skype: Add one item if value empty
+        v.skype =  (Array.isArray(user.skype) && user.skype.length > 0) ? 
+        user.skype : [{tel: ""}];
         return v;
     }
 

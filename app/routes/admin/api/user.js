@@ -756,6 +756,7 @@ router.put('/:id', (req, res) => {
     }
   }
   // linkWeb
+  /*
   logger.debug(`${apiCall} linkWeb ${req.body.linkWeb}`);
   if (req.body.linkWeb && req.body.linkWeb.length > 2) {
     let linkWebFound = false;
@@ -776,6 +777,7 @@ router.put('/:id', (req, res) => {
       req.body.links.push(newLinkWeb);
     }
   }
+  */
   // linkSocial
   logger.debug(`${apiCall} linksSocial ${req.body.linksSocial}`);
   /*if (req.body.linksSocial && req.body.linkSocial.length > 2) {
@@ -812,6 +814,7 @@ router.put('/:id', (req, res) => {
     });
   }*/
   // linkTel
+  /*
   if (req.body.linkTel && req.body.linkTel.length > 2) {
     let linkTelFound = false;
     if (req.body.links) {
@@ -831,6 +834,7 @@ router.put('/:id', (req, res) => {
       req.body.links.push(newLinkTel);
     }
   }
+  */
   /*  
   //  public address fields
   if (req.body.locality && req.body.country && req.body.locality.length > 2) {
@@ -870,8 +874,10 @@ router.put('/:id', (req, res) => {
     addresses_private:req.body.addresses_private,
     emails: req.body.emails,
     web: req.body.web,
-    phone: req.body.phone,
     social:req.body.social,
+    phone: req.body.phone,
+    mobile: req.body.mobile,
+    skype:req.body.skype,
     addresses: req.body.addresses,
     abouts: req.body.abouts,
     stagename:req.body.stagename,

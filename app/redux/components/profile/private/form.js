@@ -80,6 +80,20 @@ class ProfilePrivateForm extends Component {
                     title="Phone Number"
                     showModal={showModal}
                 />
+                <FieldArray
+                    name="mobile"
+                    component={multiInputTel}
+                    placeholder="Mobile"
+                    title="Mobile Number"
+                    showModal={showModal}
+                />
+                 <FieldArray
+                    name="skype"
+                    component={multiInputTel}
+                    placeholder="Skype"
+                    title="Skype Account"
+                    showModal={showModal}
+                />
 
 
                 <hr/>

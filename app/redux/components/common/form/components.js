@@ -12,8 +12,13 @@ import StrongPassword from 'react-strongpassword';
 import Dropzone from 'react-dropzone';
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
-    const field = <div className="form-group">
-        <PlacesAutocomplete className="form-control" inputProps={input} options={options}/>
+    const cssClasses = {
+        root: 'form-group',
+        input: 'form-control',
+        autocompleteContainer: 'my-autocomplete-container'
+      }
+    const field = <div>
+        <PlacesAutocomplete inputProps={input} classNames={cssClasses} options={options}/>
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
 

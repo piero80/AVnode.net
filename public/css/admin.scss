@@ -215,3 +215,6 @@ textarea#styled {
 .card-header h4{
   display:inline-block;
 }
+#PlacesAutocomplete__autocomplete-container{
+  z-index: 999;
+}
