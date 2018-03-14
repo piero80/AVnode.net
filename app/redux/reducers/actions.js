@@ -1478,19 +1478,12 @@ export function fetchLinkTypes(dispatch) {
 
 
 // countries
-export function fetchCountries(dispatch) {
-    return () => {
+export const fetchCountries = () => {
         return fetch('/admin/api/user/countries')
-            .then(json => (
-                dispatch({
-                    type: RESPONSE_COUNTRIES,
-                    payload: {
-                        countries: json
-                    }
-                })
-            ));
+            .then(json => {
+                return json;
+            })
     };
-}
 
 // venues
 export function addEventVenue(dispatch) {
