@@ -5,7 +5,7 @@ import Form from './form'
 import {connect} from 'preact-redux';
 import {getUser} from './selectors';
 import {locales_labels} from '../../../../../config/languages.json';
-import {editUser, fetchCountries} from "../../../reducers/actions";
+import {editUser} from "../../../reducers/actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
 
@@ -69,6 +69,7 @@ class ProfilePrivate extends Component {
         // Skype: Add one item if value empty
         v.skype =  (Array.isArray(user.skype) && user.skype.length > 0) ? 
         user.skype : [{tel: ""}];
+
         return v;
     }
 
